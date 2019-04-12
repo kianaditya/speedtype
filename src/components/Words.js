@@ -2,6 +2,7 @@ import randomWords from "random-words";
 import React, { Component } from "react";
 import Word from "./Word";
 import Letter from "./Letter";
+import "./Words.css";
 
 export class Words extends Component {
   state = {
@@ -66,9 +67,9 @@ export class Words extends Component {
     });
 
     return (
-      <div>
+      <div className="mainContainer">
         <div>{words} </div>
-        <div>{this.state.letters}</div>
+        <div className="inputField">{this.state.letters}</div>
       </div>
     );
   }
