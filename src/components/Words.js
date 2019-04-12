@@ -21,12 +21,14 @@ export class Words extends Component {
 
   compareWords = (word, letters) => {
     const finalWord = word.map((letter, index) => {
-      if(letter === letters[index]){
-        return <Letter letter={letter} highlighted='highlighted' />
+      const wordToCompare = word.slice(0, index + 1).join("");
+      const lettersToCompareWith = letters.slice(0, index + 1).join("");
+      if (wordToCompare === lettersToCompareWith) {
+        return <Letter letter={letter} highlighted="highlighted" />;
       } else {
-        return <Letter letter={letter} highlighted=''/>
+        return <Letter letter={letter} highlighted="" />;
       }
-    })
+    });
     return finalWord;
   };
 
