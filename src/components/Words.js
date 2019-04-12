@@ -12,7 +12,22 @@ export class Words extends Component {
   componentDidMount() {
     const words = randomWords(3);
     this.setState({ words: words });
+    document.addEventListener("keydown", this.handleKeyDown);
   }
+
+  handleKeyDown = e => {
+    const previousLetters = [...this.state.letters];
+    if (e.key === "Backspace") {
+      this.setState({ letters: previousLetters.slice(0, -1) });
+    }
+    if (e.key === "Enter") {
+      this.compareSolution();
+    }
+    if (e.key.length === 1) {
+      const letters = previousLetters.concat(e.key);
+      this.setState({ letters: letters });
+    }
+  };
 
   compareWords = (word, letters) => {
     const finalWord = word.map((letter, index) => {
@@ -27,12 +42,6 @@ export class Words extends Component {
     return finalWord;
   };
 
-  submitSolution = e => {
-    if (e.key === "Enter") {
-      this.compareSolution();
-    }
-  };
-
   compareSolution() {
     const solution = this.state.letters.join("");
     const words = this.state.words.map(word => {
@@ -42,13 +51,8 @@ export class Words extends Component {
         return word;
       }
     });
-    this.setState({ words: words });
-  };
-
-  registerKeyStroke = e => {
-    const letters = e.target.value.split("");
-    this.setState({ letters: letters });
-  };
+    this.setState({ words: words, letters: [] });
+  }
 
   render() {
     const words = this.state.words.map(word => {
@@ -64,13 +68,7 @@ export class Words extends Component {
     return (
       <div>
         <div>{words} </div>
-        <input
-          value={this.state.letter}
-          type="text"
-          name="typing"
-          onChange={this.registerKeyStroke}
-          onKeyDown={this.submitSolution}
-        />
+        <div>{this.state.letters}</div>
       </div>
     );
   }
