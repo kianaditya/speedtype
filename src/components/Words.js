@@ -1,11 +1,12 @@
 import randomWords from "random-words";
 import React, { Component } from "react";
 import Word from "./Word";
+import Letter from "./Letter";
 
 export class Words extends Component {
   state = {
     words: [],
-    letter: ""
+    letters: []
   };
 
   componentDidMount() {
@@ -14,18 +15,30 @@ export class Words extends Component {
   }
 
   registerKeyStroke = e => {
-    const letter = e.target.value;
-    this.setState({ letter: letter });
-    this.compareWords();
+    const letters = e.target.value.split("");
+    this.setState({ letters: letters });
   };
 
-  compareWords = () => {
-    // some function here
+  compareWords = (word, letters) => {
+    const finalWord = word.map((letter, index) => {
+      if(letter === letters[index]){
+        return <Letter letter={letter} highlighted='highlighted' />
+      } else {
+        return <Letter letter={letter} highlighted=''/>
+      }
+    })
+    return finalWord;
   };
 
   render() {
     const words = this.state.words.map(word => {
-      return <Word word={word} />;
+      return (
+        <Word
+          word={word}
+          compareWords={this.compareWords}
+          letter={this.state.letters}
+        />
+      );
     });
 
     return (
