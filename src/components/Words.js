@@ -14,11 +14,6 @@ export class Words extends Component {
     this.setState({ words: words });
   }
 
-  registerKeyStroke = e => {
-    const letters = e.target.value.split("");
-    this.setState({ letters: letters });
-  };
-
   compareWords = (word, letters) => {
     const finalWord = word.map((letter, index) => {
       const wordToCompare = word.slice(0, index + 1).join("");
@@ -30,6 +25,29 @@ export class Words extends Component {
       }
     });
     return finalWord;
+  };
+
+  submitSolution = e => {
+    if (e.key === "Enter") {
+      this.compareSolution();
+    }
+  };
+
+  compareSolution() {
+    const solution = this.state.letters.join("");
+    const words = this.state.words.map(word => {
+      if (word === solution) {
+        return randomWords();
+      } else {
+        return word;
+      }
+    });
+    this.setState({ words: words });
+  };
+
+  registerKeyStroke = e => {
+    const letters = e.target.value.split("");
+    this.setState({ letters: letters });
   };
 
   render() {
@@ -51,6 +69,7 @@ export class Words extends Component {
           type="text"
           name="typing"
           onChange={this.registerKeyStroke}
+          onKeyDown={this.submitSolution}
         />
       </div>
     );
