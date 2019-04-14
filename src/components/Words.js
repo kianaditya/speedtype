@@ -26,7 +26,7 @@ export class Words extends Component {
     if (e.key === "Enter") {
       this.compareSolution();
     }
-    if (e.key.length === 1) {
+    if (e.key >= "a" && e.key <= "z") {
       const letters = previousLetters.concat(e.key);
       this.setState({ letters: letters,totalKeyStrokes: this.state.totalKeyStrokes + 1 });
     }
