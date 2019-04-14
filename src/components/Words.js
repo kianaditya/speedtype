@@ -7,7 +7,9 @@ import "./Words.css";
 export class Words extends Component {
   state = {
     words: [],
-    letters: []
+    letters: [],
+    totalKeyStrokes: 0,
+    correctKeyStrokes:0
   };
 
   componentDidMount() {
@@ -26,7 +28,7 @@ export class Words extends Component {
     }
     if (e.key.length === 1) {
       const letters = previousLetters.concat(e.key);
-      this.setState({ letters: letters });
+      this.setState({ letters: letters,totalKeyStrokes: this.state.totalKeyStrokes + 1 });
     }
   };
 
@@ -47,6 +49,7 @@ export class Words extends Component {
     const solution = this.state.letters.join("");
     const words = this.state.words.map(word => {
       if (word === solution) {
+        this.setState({correctKeyStrokes: this.state.correctKeyStrokes + word.length})
         return randomWords();
       } else {
         return word;
@@ -70,6 +73,9 @@ export class Words extends Component {
       <div className="mainContainer">
         <div>{words} </div>
         <div className="inputField">{this.state.letters}</div>
+        <h3>Total keystrokes: {this.state.totalKeyStrokes}</h3>
+        <h3>Correct KeyStrokes: {this.state.correctKeyStrokes}</h3>
+        <h3>Accuracy: {this.state.totalKeyStrokes > 0 ? Math.round (this.state.correctKeyStrokes*100/this.state.totalKeyStrokes) : 0} %</h3>
       </div>
     );
   }
