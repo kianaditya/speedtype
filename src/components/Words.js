@@ -17,9 +17,20 @@ export class Words extends Component {
   }
 
   componentDidMount () {
-    const words = randomWords(3)
-    this.setState({ words: words })
+    this.setNewWord()
+    window.addEventListener('webkitAnimationEnd', () => {
+      this.setNewWord()
+    })
     document.addEventListener('keydown', this.handleKeyDown)
+  }
+
+  setNewWord = () => {
+    const words = randomWords(1)
+    this.setState({ words: words })
+    let el = document.getElementsByClassName('wordsTransition')[0]
+    el.classList.remove('wordsTransition')
+    el.scrollBy() /* trigger reflow */
+    el.classList.add('wordsTransition')
   }
 
   handleKeyDown = e => {
@@ -57,6 +68,7 @@ export class Words extends Component {
     const solution = this.state.letters.join('')
     const words = this.state.words.map(word => {
       if (word === solution) {
+        this.setNewWord()
         this.setState({
           correctKeyStrokes: this.state.correctKeyStrokes + word.length,
           totalTime: this.state.totalTime + Date.now() - this.state.startTime,
@@ -85,7 +97,7 @@ export class Words extends Component {
 
     return (
       <div className='mainContainer'>
-        <div>{words} </div>
+        <div className='wordsTransition'>{words} </div>
         <div className='inputField'>{this.state.letters}</div>
         <h3>Total keystrokes: {this.state.totalKeyStrokes}</h3>
         <h3>Correct KeyStrokes: {this.state.correctKeyStrokes}</h3>
@@ -101,7 +113,13 @@ export class Words extends Component {
         </h3>
         <h3>Correct words: {this.state.wordsCount}</h3>
         <h3>Total time: {this.state.totalTime} seconds</h3>
-       <h3>Typing speed: {this.state.totalTime > 0 ? Math.round(this.state.wordsCount*60/this.state.totalTime) : 0} WPM</h3>
+        <h3>
+          Typing speed:{' '}
+          {this.state.totalTime > 0
+            ? Math.round((this.state.wordsCount * 60) / this.state.totalTime)
+            : 0}{' '}
+          WPM
+        </h3>
       </div>
     )
   }
