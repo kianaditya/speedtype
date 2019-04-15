@@ -16,12 +16,17 @@
 }
 
 .wordsTransition {
-    position: absolute;
+    position: relative;
     top: 0px;
     animation: wordDrop 5s;
 }
 
 @keyframes wordDrop {
-    from {top :0px}
-    to {top :250px}
+    from {
+        top: 0px
+    }
+
+    to {
+        top: 250px
+    }
 }
