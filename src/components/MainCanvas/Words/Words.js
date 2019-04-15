@@ -17,22 +17,33 @@ export class Words extends Component {
   };
 
   componentDidMount() {
-    // this.setNewWord();
     const words = randomWords(3);
     this.setState({ words: words });
-    window.addEventListener("webkitAnimationEnd", () => {
-      // this.setNewWord();
+    window.addEventListener("webkitAnimationEnd", e => {
+      this.removeWord(e);
     });
     document.addEventListener("keydown", this.handleKeyDown);
   }
 
-  setNewWord = () => {
-    const words = randomWords(1);
-    this.setState({ words: words });
-    let el = document.getElementsByClassName("wordsTransition")[0];
+  setNewWord = word => {
+    const newWord = randomWords(1);
+    let el = document.getElementById(word);
     el.classList.remove("wordsTransition");
     el.scrollBy(); /* trigger reflow */
     el.classList.add("wordsTransition");
+    return newWord;
+  };
+
+  removeWord = e => {
+    const lostWord = e.target.id;
+    const remainingWords = this.state.words.map(word => {
+      if (lostWord === word) {
+        return "";
+      } else {
+        return word;
+      }
+    });
+    this.setState({ words: remainingWords });
   };
 
   handleKeyDown = e => {
@@ -70,8 +81,7 @@ export class Words extends Component {
     const solution = this.state.letters.join("");
     const words = this.state.words.map(word => {
       if (word === solution) {
-        // this.setNewWord();
-
+        this.setNewWord(solution);
         this.setState({
           correctKeyStrokes: this.state.correctKeyStrokes + word.length,
           totalTime: this.state.totalTime + Date.now() - this.state.startTime,
@@ -100,12 +110,13 @@ export class Words extends Component {
 
     return (
       <div className="mainContainer">
+        {this.state.words.join().length <= 3 && <h1>I work!</h1>}
         <div style={{ display: "flex" }}> {words}</div>
         <div className="inputField">{this.state.letters}</div>
         <h3>Total keystrokes: {this.state.totalKeyStrokes}</h3>
         <h3>Correct KeyStrokes: {this.state.correctKeyStrokes}</h3>
         <h3>
-          Accuracy:{" "}
+          Accuracy:
           {this.state.totalKeyStrokes > 0
             ? Math.round(
                 (this.state.correctKeyStrokes * 100) /
@@ -117,7 +128,7 @@ export class Words extends Component {
         <h3>Correct words: {this.state.wordsCount}</h3>
         <h3>Total time: {this.state.totalTime} seconds</h3>
         <h3>
-          Typing speed:{" "}
+          Typing speed:
           {this.state.totalTime > 0
             ? Math.round((this.state.wordsCount * 60) / this.state.totalTime)
             : 0}{" "}

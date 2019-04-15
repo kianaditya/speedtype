@@ -5,8 +5,12 @@ const Word = props => {
   letters = props.compareWords(letters, props.letter);
   return (
     <div
+      id={props.word}
       className="wordsTransition"
-      style={{ padding: "10px 0px", margin: "10px" }}
+      style={{
+        padding: "10px 0px",
+        margin: "10px"
+      }}
     >
       {letters}
     </div>
