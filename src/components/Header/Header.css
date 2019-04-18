@@ -1,13 +1,12 @@
 .header {
-    position: fixed;
-    left: 0;
-    top: 0;
+    margin: 0px;
     width: 100%;
-    height: 10%;
+    height: 60px;
     background-color: teal;
     color: white;
 }
 
 .headerTitle {
-    margin-left: 10px;
+    margin: 0px;
+    padding: 10px;
 }

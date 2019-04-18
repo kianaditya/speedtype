@@ -14,3 +14,19 @@
     margin-top: 40vh;
 
 }
+
+.wordsTransition {
+    position: relative;
+    top: 0px;
+    animation: wordDrop 5s
+}
+
+@keyframes wordDrop {
+    from {
+        top: 0px
+    }
+
+    to {
+        top: 250px
+    }
+}
